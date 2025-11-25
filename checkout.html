@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Checkout - Kind-Kart</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css"> <!-- same css as donate.html -->
+</head>
+<body class="bg-light">
+
+<!-- Navbar -->
+<nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm py-3">
+  <div class="container">
+    <a class="navbar-brand fw-bold d-flex align-items-center" href="main.html">
+      <img src="images/logo.png" alt="Kind-Kart Logo" height="40" class="me-2">
+      Kind-Kart
+    </a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav ms-auto align-items-center">
+        <li class="nav-item"><a class="nav-link" href="main.html">Home</a></li>
+        <li class="nav-item"><a class="nav-link" href="cause.html">Causes</a></li>
+        <li class="nav-item"><a class="nav-link" href="about.html">About</a></li>
+        <li class="nav-item"><a class="nav-link" href="contact.html">Contact</a></li>
+        <li class="nav-item"><a class="nav-link" href="donate.html">Donate Now</a></li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<!-- Page Header -->
+<header class="bg-primary text-white text-center py-5">
+  <h1 class="display-4">Checkout</h1>
+  <p class="lead">Review your cart and complete your donation</p>
+</header>
+
+<!-- Checkout Section -->
+<section class="py-5">
+  <div class="container">
+    <div class="row g-4">
+      <!-- Cart Summary -->
+      <div class="col-lg-6">
+        <div class="card shadow-sm">
+          <div class="card-header bg-primary text-white">
+            <i class="bi bi-cart3 me-2"></i>Your Cart
+          </div>
+          <div class="card-body" id="checkout-cart"></div>
+          <div class="card-footer d-flex justify-content-between align-items-center">
+            <button class="btn btn-outline-secondary" onclick="window.location.href='cause.html'">
+              <i class="bi bi-arrow-left"></i> Continue Shopping
+            </button>
+            <div class="fw-bold">
+              Total: <span id="checkout-total" class="text-primary">₹0</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Payment Options -->
+      <div class="col-lg-6">
+        <div class="card shadow-sm">
+          <div class="card-header bg-secondary text-white">
+            <i class="bi bi-credit-card me-2"></i>Payment Options
+          </div>
+          <div class="card-body">
+            <form id="checkout-form">
+              <div class="mb-3">
+                <label for="paymentMethod" class="form-label">Select Payment Method</label>
+                <select id="paymentMethod" class="form-select" required>
+                  <option value="card">Credit/Debit Card</option>
+                  <option value="paypal">PayPal</option>
+                </select>
+              </div>
+              <button type="submit" class="btn btn-success w-100">
+                <i class="bi bi-check-circle"></i> Pay Now
+              </button>
+            </form>
+          </div>
+        </div>
+        <div class="text-center mt-3">
+          <button class="btn btn-outline-primary" onclick="window.location.href='main.html'">
+            <i class="bi bi-house"></i> Back to Home
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Footer -->
+<footer class="bg-dark text-white text-center py-3">
+  <p class="mb-0">&copy; 2025 Kind-Kart | All Rights Reserved</p>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+const API = "http://localhost:3000";
+
+// Load cart & user
+const cart = JSON.parse(localStorage.getItem("kk_cart") || "[]");
+const user = JSON.parse(localStorage.getItem("kk_user") || "null");
+
+function renderCheckout() {
+  const cartDiv = document.getElementById("checkout-cart");
+  const totalEl = document.getElementById("checkout-total");
+
+  if (cart.length === 0) {
+    cartDiv.innerHTML = "<p class='text-muted'>Your cart is empty.</p>";
+    totalEl.textContent = "₹0";
+    return;
+  }
+
+  let total = 0;
+  cartDiv.innerHTML = "";
+  cart.forEach(item => {
+    const itemTotal = item.price * (item.qty || 1);
+    total += itemTotal;
+    cartDiv.innerHTML += `
+      <div class="d-flex justify-content-between border-bottom py-2">
+        <span>${item.name} (x${item.qty || 1})</span>
+        <span>₹${itemTotal}</span>
+      </div>
+    `;
+  });
+  totalEl.textContent = "₹" + total;
+}
+
+renderCheckout();
+
+// Handle checkout form
+document.getElementById("checkout-form").addEventListener("submit", async (e) => {
+  e.preventDefault();
+  const paymentMethod = document.getElementById("paymentMethod").value;
+  const amount = cart.reduce((sum, i) => sum + i.price * (i.qty || 1), 0);
+
+  const body = {
+    userId: user?.id || null,
+    items: cart,
+    amount,
+    paymentMethod,
+    currency: "inr",
+    description: "Cart Donation"
+  };
+
+  try {
+    const res = await fetch(API + "/api/checkout", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(body)
+    });
+
+    const data = await res.json();
+    if (data.success) {
+  // Save transaction in localStorage for receipt page
+  localStorage.setItem("kk_receipt", JSON.stringify({
+    transactionId: data.transactionId,
+    donationId: data.donationId,
+    amount: data.amount,
+    items: data.items,
+    paymentMethod,
+    date: new Date().toLocaleString()
+  }));
+
+  // Clear cart
+  localStorage.removeItem("kk_cart");
+
+  // Redirect to receipt page
+  window.location.href = "receipt.html";
+}
+ else {
+      alert("❌ Payment failed: " + (data.error || "Unknown error"));
+    }
+  } catch (err) {
+    console.error(err);
+    alert("Server error during payment");
+  }
+});
+</script>
+</body>
+</html>

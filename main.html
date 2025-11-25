@@ -1,0 +1,558 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <title>Kind-Kart - Making a Difference Together</title>
+    <meta
+      name="description"
+      content="Join Kind-Kart in making a real difference. Support causes that matter and help create positive change in communities worldwide."
+    />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css"
+      rel="stylesheet"
+    />
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="styles.css" />
+
+    <style>
+      /* ✅ Hero Section - Solid Color */
+      .hero-section {
+        background: #0d6efd; /* blue */
+        min-height: 70vh;
+        display: flex;
+        align-items: center;
+        color: white;
+        position: relative;
+        text-align: center;
+        padding: 60px 20px;
+      }
+
+      .quote-section {
+        background: #f8f9fa;
+        padding: 4rem 0;
+      }
+
+      .quote-card {
+        background: white;
+        border-radius: 20px;
+        padding: 2rem;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        text-align: center;
+        margin-bottom: 2rem;
+        border-left: 5px solid #ff5722;
+      }
+
+      /* ✅ Stats Section - White Background */
+      .stats-section {
+        background: #f8f9fa;
+        color: #000;
+        padding: 4rem 0;
+      }
+
+      .stat-card {
+        text-align: center;
+        padding: 2rem 1rem;
+      }
+
+      .stat-number {
+        font-size: 3rem;
+        font-weight: bold;
+        margin-bottom: 0.5rem;
+        color: #0d6efd;
+      }
+
+      .causes-section {
+        padding: 4rem 0;
+        background: white;
+      }
+
+      .cause-card {
+        background: white;
+        border-radius: 15px;
+        overflow: hidden;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        transition: transform 0.3s ease;
+        margin-bottom: 2rem;
+      }
+
+      .cause-card:hover {
+        transform: translateY(-10px);
+      }
+
+      .cause-image {
+        height: 200px;
+        background-size: cover;
+        background-position: center;
+        position: relative;
+      }
+
+      .cause-overlay {
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: rgba(0, 0, 0, 0.5);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        opacity: 0;
+        transition: opacity 0.3s ease;
+      }
+
+      .cause-card:hover .cause-overlay {
+        opacity: 1;
+      }
+
+      /* ✅ CTA Section - Simple Blue */
+      .cta-section {
+        background: #0d6efd;
+        color: white;
+        padding: 4rem 0;
+        text-align: center;
+      }
+
+      .btn-hero {
+        background: white;
+        border: 2px solid white;
+        color: #0d6efd;
+        padding: 1rem 2rem;
+        border-radius: 50px;
+        font-weight: 600;
+        text-decoration: none;
+        transition: all 0.3s ease;
+      }
+
+      .btn-hero:hover {
+        background: #f8f9fa;
+        color: #0b5ed7;
+        transform: translateY(-3px);
+      }
+
+      .section-title {
+        text-align: center;
+        margin-bottom: 3rem;
+      }
+
+      .section-title h2 {
+        font-size: 2.5rem;
+        font-weight: bold;
+        margin-bottom: 1rem;
+      }
+
+      .section-title p {
+        font-size: 1.2rem;
+        color: #6c757d;
+        max-width: 600px;
+        margin: 0 auto;
+      }
+    </style>
+  </head>
+  <body>
+    <!-- ✅ Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm py-3">
+      <div class="container">
+        <a
+          class="navbar-brand fw-bold d-flex align-items-center"
+          href="main.html"
+        >
+          <img
+            src="images/logo.png"
+            alt="Kind-Kart Logo"
+            height="40"
+            class="me-2"
+          />
+          Kind-Kart
+        </a>
+
+        <button
+          class="navbar-toggler"
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#navbarNav"
+        >
+          <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarNav">
+          <ul class="navbar-nav ms-auto align-items-center">
+            <li class="nav-item">
+              <a class="nav-link active" href="main.html">Home</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="cause.html">Causes</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="about.html">About</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="contact.html">Contact</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="donate.html">Donate Now</a>
+            </li>
+            <li class="nav-item ms-2">
+              <a class="btn btn-outline-primary" href="login.html">
+                <i class="bi bi-box-arrow-in-right me-1"></i> Login
+              </a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+
+    <!-- ✅ Hero Section -->
+    <!-- ===== Improved Hero (paste this into main.html) ===== -->
+    <style>
+      /* Hero wrapper with background image (keeps HTML clean) */
+      .hero-section {
+        position: relative;
+        min-height: 70vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 60px 20px;
+        overflow: hidden;
+      }
+
+      /* background image */
+      .hero-section::before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background: url("images/hero-bg1.png") center/cover no-repeat;
+        transform: scale(1.03); /* slight scale for nicer edges */
+        filter: saturate(0.95) contrast(0.95);
+        z-index: 0;
+      }
+
+      /* subtle dark overlay to improve contrast (adjust opacity below) */
+      .hero-section::after {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(
+          180deg,
+          rgba(0, 0, 0, 0.35) 0%,
+          rgba(0, 0, 0, 0.35) 100%
+        );
+        z-index: 1;
+      }
+
+      /* centered content card */
+      .hero-content {
+        position: relative;
+        z-index: 2;
+        width: 100%;
+        max-width: 1000px;
+        margin: 0 16px;
+        padding: 36px 40px;
+        border-radius: 12px;
+        /* glass-like panel: slight translucency so bg still shows through */
+        background: rgba(255, 255, 255, 0.06);
+        backdrop-filter: blur(6px) saturate(110%);
+        -webkit-backdrop-filter: blur(6px) saturate(110%);
+        box-shadow: 0 12px 30px rgba(0, 0, 0, 0.35);
+        text-align: center;
+      }
+
+      /* Headline */
+      .hero-title {
+        font-family: "Poppins", system-ui, -apple-system, "Segoe UI", Roboto,
+          "Helvetica Neue", Arial;
+        font-size: clamp(2rem, 4.5vw, 3.4rem);
+        line-height: 1.02;
+        color: #ffffff;
+        font-weight: 800;
+        margin: 0 0 18px;
+        text-shadow: 0 4px 18px rgba(0, 0, 0, 0.45);
+        letter-spacing: -0.02em;
+      }
+
+      /* Paragraph */
+      .hero-desc {
+        font-family: "Georgia", serif;
+        color: rgba(255, 255, 255, 0.92);
+        font-size: clamp(1rem, 1.6vw, 1.15rem);
+        line-height: 1.85;
+        max-width: 860px;
+        margin: 0 auto 20px;
+        text-shadow: 0 2px 10px rgba(0, 0, 0, 0.35);
+      }
+
+      /* CTA */
+      .hero-cta {
+        display: inline-block;
+        margin-top: 12px;
+        padding: 12px 26px;
+        border-radius: 999px;
+        font-weight: 700;
+        text-decoration: none;
+        background: linear-gradient(90deg, #ff7a18 0%, #ff5722 100%);
+        color: #fff;
+        box-shadow: 0 8px 20px rgba(255, 87, 34, 0.25),
+          0 2px 6px rgba(0, 0, 0, 0.15);
+        transition: transform 0.18s ease, box-shadow 0.18s ease;
+      }
+
+      .hero-cta:hover {
+        transform: translateY(-4px);
+        box-shadow: 0 18px 30px rgba(255, 87, 34, 0.28);
+      }
+
+      /* small note style */
+      .hero-note {
+        display: block;
+        margin-top: 12px;
+        color: rgba(255, 255, 255, 0.8);
+        font-size: 0.95rem;
+      }
+
+      /* responsiveness */
+      @media (max-width: 600px) {
+        .hero-content {
+          padding: 24px;
+        }
+        .hero-desc {
+          line-height: 1.6;
+        }
+      }
+    </style>
+
+    <section
+      class="hero-section"
+      aria-label="Hero: Making a Difference Together"
+    >
+      <div class="hero-content">
+        <h1 class="hero-title">Every Act of Kindness Matters</h1>
+
+        <p class="hero-desc">
+          Kind-Kart exists to make kindness simple and meaningful. Every day, families face hunger, illness, and lack of opportunity — but together, we can change that. Your support helps deliver food, healthcare, and education to those who need it most. It’s more than giving — it’s humanity in action. <br /><br />
+          <strong style="color: #ffd7b0"
+            >Join us — step by step, we create positive change.</strong
+          >
+        </p>
+
+      
+      </div>
+    </section>
+
+    <!-- ✅ Quote Section -->
+    <section class="quote-section">
+      <div class="container">
+        <div class="row">
+          <div class="col-lg-8 mx-auto">
+            <div class="quote-card">
+              <i class="bi bi-quote text-danger fs-1 mb-3"></i>
+              <h3 class="mb-3">
+                "The best way to find yourself is to lose yourself in the
+                service of others."
+              </h3>
+              <p class="text-muted mb-0">- Mahatma Gandhi</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ✅ Statistics Section -->
+  <!-- Image-only Donation Gallery -->
+<section class="donation-visuals">
+  <div class="container">
+    <div class="gallery-grid">
+      <img src="images/bdonate.png" alt="" loading="lazy" class="gallery-item">
+      <img src="images/emergency.png" alt="" loading="lazy" class="gallery-item">
+      <img src="images/ss5.png" alt="" loading="lazy" class="gallery-item--tall">
+      <img src="images/hdonate.png" alt="" loading="lazy" class="gallery-item">
+      <img src="images/fdonate.png" alt="" loading="lazy" class="gallery-item">
+    </div>
+  </div>
+</section>
+
+
+
+    <!-- ✅ Featured Causes Section -->
+    <section class="causes-section">
+      <div class="container">
+        <div class="section-title">
+          <h2>Featured Causes</h2>
+          <p>
+            Discover meaningful causes making a real impact in communities
+            worldwide
+          </p>
+        </div>
+        <div class="row">
+          <!-- Cause 1 -->
+          <div class="col-lg-4 col-md-6">
+            <div class="cause-card">
+              <div
+                class="cause-image"
+                style="background-image: url('images/edu.png')"
+              >
+                <div class="cause-overlay">
+                  
+                </div>
+              </div>
+              <div class="card-body p-4">
+                <h5 class="card-title">
+                  <i class="bi bi-book text-primary me-2"></i> Education for All
+                </h5>
+                <p class="card-text">
+                  Providing quality education to underprivileged children.
+                </p>
+                <div class="d-flex justify-content-between align-items-center">
+                  
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- Cause 2 -->
+          <div class="col-lg-4 col-md-6">
+            <div class="cause-card">
+              <div
+                class="cause-image"
+                style="background-image: url('images/health.jpg')"
+              >
+                <div class="cause-overlay">
+                  
+                </div>
+              </div>
+              <div class="card-body p-4">
+                <h5 class="card-title">
+                  <i class="bi bi-heart-pulse text-danger me-2"></i> Healthcare
+                  Access
+                </h5>
+                <p class="card-text">
+                  Bringing essential healthcare services to remote communities.
+                </p>
+                <div class="d-flex justify-content-between align-items-center">
+                  
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- Cause 3 -->
+          <div class="col-lg-4 col-md-6">
+            <div class="cause-card">
+              <div
+                class="cause-image"
+                style="background-image: url('images/food.jpg')"
+              >
+                <div class="cause-overlay">
+                  
+                </div>
+              </div>
+              <div class="card-body p-4">
+                <h5 class="card-title">
+                  <i class="bi bi-egg-fried text-warning me-2"></i> Food
+                  Security
+                </h5>
+                <p class="card-text">
+                  Fighting hunger with nutritious meals for vulnerable families.
+                </p>
+                <div class="d-flex justify-content-between align-items-center">
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="text-center mt-3">
+          <a href="cause.html" class="btn btn-outline-dark px-4 py-2"
+            >See More <i class="bi bi-arrow-right ms-1"></i
+          ></a>
+        </div>
+      </div>
+    </section>
+
+    <!-- ✅ Simple CTA Section -->
+    <section
+      class="cta-section"
+      style="
+        background: linear-gradient(135deg, #f8f9fa, #e9f2ff);
+        padding: 60px 20px;
+        text-align: center;
+      "
+    >
+      <div class="container">
+        <h2 class="fw-bold mb-3" style="color: #0d6efd">
+          Ready to Make a Difference?
+        </h2>
+        <p
+          class="mx-auto mb-4"
+          style="
+            max-width: 700px;
+            font-size: 1.2rem;
+            color: #333;
+            line-height: 1.7;
+          "
+        >
+          Every small act of kindness counts. Support a cause today and be the
+          reason someone smiles tomorrow. Together, we can create a positive
+          change. ❤️
+        </p>
+        <a href="donate.html" class="btn btn-primary px-4 py-2">
+          <i class="bi bi-heart-fill me-2"></i>Donate Now
+        </a>
+      </div>
+    </section>
+
+    <!-- ✅ Footer -->
+    <footer class="bg-dark text-white text-center py-4">
+      <div class="container">
+        <p class="mb-0">&copy; 2025 Kind-Kart. All rights reserved.</p>
+      </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+      document.addEventListener("DOMContentLoaded", () => {
+        const user = JSON.parse(localStorage.getItem("kk_user") || "null");
+        const nav = document.querySelector(".navbar .navbar-nav");
+        if (!nav) return;
+
+        const loginBtn = nav
+          .querySelector('a[href="login.html"]')
+          ?.closest("li");
+
+        if (user && loginBtn) {
+          const li = document.createElement("li");
+          li.className = "nav-item dropdown ms-2";
+          li.innerHTML = `
+        <a class="nav-link dropdown-toggle d-flex align-items-center" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+          <img src="${
+            user.photo_url ||
+            "https://ui-avatars.com/api/?name=" +
+              encodeURIComponent(user.name || user.email)
+          }" 
+               alt="avatar" 
+               class="rounded-circle me-2" 
+               style="width:28px;height:28px;object-fit:cover;"> 
+          <span>${user.name || user.email}</span>
+        </a>
+        <ul class="dropdown-menu dropdown-menu-end">
+          <li><a class="dropdown-item" href="profile.html">Profile</a></li>
+          <li><a class="dropdown-item" href="donation_history.html">My Donations</a></li>
+          <li><a class="dropdown-item" href="feedback.html">Feedback</a></li>
+          <li><hr class="dropdown-divider"></li>
+          <li><button class="dropdown-item" id="kk-logout">Logout</button></li>
+        </ul>
+      `;
+          loginBtn.replaceWith(li);
+
+          // Logout handler
+          document
+            .getElementById("kk-logout")
+            ?.addEventListener("click", () => {
+              localStorage.removeItem("kk_user");
+              window.location.reload();
+            });
+        }
+      });
+    </script>
+  </body>
+</html>

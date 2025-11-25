@@ -1,0 +1,720 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Donate Now - Kind-Kart</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Bootstrap Icons -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+    
+    <style>
+        .donation-hero {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
+            color: white;
+            padding: 4rem 0;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .donation-hero .container {
+            position: relative;
+            z-index: 1;
+        }
+
+        .donation-hero h1, .donation-hero p {
+            text-shadow: 0 2px 8px rgba(0,0,0,0.5);
+        }
+
+        .donation-card {
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            overflow: hidden;
+            margin-bottom: 2rem;
+        }
+
+        .donation-image {
+            height: 200px;
+            background-size: cover;
+            background-position: center;
+            position: relative;
+        }
+
+        .donation-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(45deg, rgba(13, 110, 253, 0.8), rgba(255, 87, 34, 0.8));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.5rem;
+            font-weight: bold;
+        }
+
+        .amount-option {
+            border: 2px solid #e9ecef;
+            border-radius: 12px;
+            padding: 1rem;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-bottom: 1rem;
+        }
+
+        .amount-option:hover {
+            border-color: #0d6efd;
+            background-color: #f8f9fa;
+        }
+
+        .amount-option.selected {
+            border-color: #0d6efd;
+            background-color: #e7f3ff;
+        }
+
+        .amount-option input[type="radio"] {
+            display: none;
+        }
+
+
+
+        .payment-method {
+            border: 2px solid #e9ecef;
+            border-radius: 12px;
+            padding: 1rem;
+            margin-bottom: 1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .payment-method:hover {
+            border-color: #0d6efd;
+            background-color: #f8f9fa;
+        }
+
+        .payment-method.selected {
+            border-color: #0d6efd;
+            background-color: #e7f3ff;
+        }
+
+        .impact-stats {
+            background: linear-gradient(135deg, #0d6efd, #ff5722);
+            color: white;
+            padding: 3rem 0;
+            margin: 3rem 0;
+        }
+
+        .stat-item {
+            text-align: center;
+            padding: 1rem;
+        }
+
+        .stat-number {
+            font-size: 2.5rem;
+            font-weight: bold;
+            margin-bottom: 0.5rem;
+        }
+
+        .form-floating {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-floating .form-control {
+            border-radius: 12px;
+            border: 2px solid #e9ecef;
+            padding: 1rem 0.75rem;
+            height: auto;
+            transition: all 0.3s ease;
+        }
+
+        .form-floating .form-control:focus {
+            border-color: #0d6efd;
+            box-shadow: 0 0 0 0.2rem rgba(13, 110, 253, 0.25);
+        }
+
+        .btn-donate-custom {
+            background: linear-gradient(45deg, #ff5722, #ff8a00);
+            border: none;
+            color: white;
+            padding: 1rem 2rem;
+            border-radius: 12px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .btn-donate-custom:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(255, 87, 34, 0.3);
+            color: white;
+        }
+    </style>
+    
+    <!-- Payment Slip Styles -->
+    <style>
+        .payment-slip {
+            max-width: 600px;
+            margin: 0 auto;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+        
+        .payment-notification {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 9999;
+            min-width: 300px;
+            animation: slideInRight 0.3s ease-out;
+        }
+        
+        @keyframes slideInRight {
+            from {
+                transform: translateX(100%);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+        
+        .notification-success {
+            background: linear-gradient(45deg, #28a745, #20c997);
+            color: white;
+            border: none;
+        }
+        
+        .notification-error {
+            background: linear-gradient(45deg, #dc3545, #fd7e14);
+            color: white;
+            border: none;
+        }
+        
+        @media print {
+            .payment-slip {
+                box-shadow: none;
+                border: 2px solid #000;
+            }
+            .btn, .navbar, .footer {
+                display: none !important;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<!-- Navbar -->
+<nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm py-3">
+    <div class="container">
+        <a class="navbar-brand fw-bold d-flex align-items-center" href="main.html">
+            <img src="images/logo.png" alt="Kind-Kart Logo" height="40" class="me-2">
+            Kind-Kart
+        </a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ms-auto align-items-center">
+                <li class="nav-item"><a class="nav-link" href="main.html">Home</a></li>
+                <li class="nav-item"><a class="nav-link" href="cause.html">Causes</a></li>
+                <li class="nav-item"><a class="nav-link" href="about.html">About</a></li>
+                <li class="nav-item"><a class="nav-link" href="contact.html">Contact</a></li>
+                <li class="nav-item"><a class="nav-link active" href="donate.html">Donate Now</a></li>
+                <li class="nav-item ms-2"><a class="btn btn-outline-primary" href="login.html"><i class="bi bi-box-arrow-in-right me-1"></i> Login</a></li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+<!-- Hero Section -->
+<section class="donation-hero">
+    <div class="container">
+        <h1 class="display-4 fw-bold mb-3">Make a Difference Today</h1>
+        <p class="lead mb-4">Your generosity has the power to transform lives. Every donation, no matter the size, creates positive change.</p>
+        <div class="row justify-content-center">
+            <div class="col-md-8">
+                <div class="row text-center">
+                    <div class="col-4">
+                        <i class="bi bi-heart-fill fs-1 mb-2"></i>
+                        <p class="mb-0">Secure</p>
+                    </div>
+                    <div class="col-4">
+                        <i class="bi bi-shield-check fs-1 mb-2"></i>
+                        <p class="mb-0">Transparent</p>
+                    </div>
+                    <div class="col-4">
+                        <i class="bi bi-graph-up fs-1 mb-2"></i>
+                        <p class="mb-0">Impactful</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Impact Statistics removed as requested -->
+
+<!-- Donation Form Section -->
+<section class="py-5">
+  <div class="container">
+    <div class="row justify-content-center">
+      <!-- Donation Form Only (Full Width) -->
+      <div class="col-lg-8">
+        <div class="donation-card">
+          <div class="card-body p-4">
+            <h3 class="mb-4"><i class="bi bi-cash-stack text-success me-2"></i>Make Your Donation</h3>
+            
+            <form id="donationForm">
+              <!-- Personal Information -->
+              <div class="row">
+                <div class="col-md-6">
+                  <div class="form-floating">
+                    <input type="text" class="form-control" id="firstName" placeholder="First Name" required>
+                    <label for="firstName"><i class="bi bi-person me-2"></i>First Name</label>
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <div class="form-floating">
+                    <input type="text" class="form-control" id="lastName" placeholder="Last Name" required>
+                    <label for="lastName"><i class="bi bi-person me-2"></i>Last Name</label>
+                  </div>
+                </div>
+              </div>
+              
+              <div class="form-floating">
+                <input type="email" class="form-control" id="email" placeholder="Email" required>
+                <label for="email"><i class="bi bi-envelope me-2"></i>Email Address</label>
+              </div>
+
+              <!-- Donation Amount -->
+              <div class="mb-4">
+                <label class="form-label fw-bold">Select Donation Amount</label>
+                <div class="row">
+                  <div class="col-md-3">
+                    <div class="amount-option" onclick="selectAmount(200, event)">
+                      <input type="radio" name="amount" value="200">
+                      <div class="fw-bold">₹200</div>
+                      <small class="text-muted">Provides one meal kit for a family</small>
+                    </div>
+                  </div>
+                  <div class="col-md-3">
+                    <div class="amount-option" onclick="selectAmount(250, event)">
+                      <input type="radio" name="amount" value="250">
+                      <div class="fw-bold">₹250</div>
+                      <small class="text-muted">Supports school supplies for one child</small>
+                    </div>
+                  </div>
+                  <div class="col-md-3">
+                    <div class="amount-option" onclick="selectAmount(500, event)">
+                      <input type="radio" name="amount" value="500">
+                      <div class="fw-bold">₹500</div>
+                      <small class="text-muted">Covers basic medical aid for one person</small>
+                    </div>
+                  </div>
+                  <div class="col-md-3">
+                    <div class="amount-option" onclick="selectAmount(1000, event)">
+                      <input type="radio" name="amount" value="1000">
+                      <div class="fw-bold">₹1000</div>
+                      <small class="text-muted">Helps provide emergency relief for a family</small>
+                    </div>
+                  </div>
+                </div>
+                
+                <div class="form-floating mt-3">
+                  <input type="number" class="form-control" id="customAmount" placeholder="Custom Amount" min="1">
+                  <label for="customAmount"><i class="bi bi-currency-rupee me-2"></i>Custom Amount</label>
+                </div>
+              </div>
+
+              <!-- Payment Method -->
+              <div class="mb-4">
+                <label class="form-label fw-bold">Payment Method</label>
+                
+                <div class="payment-method" onclick="selectPayment('card', event)">
+                  <input type="radio" name="paymentMethod" value="card" id="cardPayment">
+                  <div class="d-flex align-items-center">
+                    <i class="bi bi-credit-card fs-3 me-3 text-success"></i>
+                    <div>
+                      <div class="fw-bold">Credit/Debit Card</div>
+                      <small class="text-muted">Secure online payment</small>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="payment-method" onclick="selectPayment('paypal', event)">
+                  <input type="radio" name="paymentMethod" value="paypal" id="paypalPayment">
+                  <div class="d-flex align-items-center">
+                    <i class="bi bi-paypal fs-3 me-3 text-info"></i>
+                    <div>
+                      <div class="fw-bold">PayPal</div>
+                      <small class="text-muted">Fast and secure</small>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Card Details Section (initially hidden) -->
+              <div id="cardDetailsSection" class="mb-4" style="display: none;">
+                <h6 class="mb-3"><i class="bi bi-credit-card me-2"></i>Card Details</h6>
+                <div class="row">
+                  <div class="col-12">
+                    <div class="form-floating mb-3">
+                      <input type="text" class="form-control" id="cardNumber" placeholder="Card Number" maxlength="19">
+                      <label for="cardNumber">Card Number</label>
+                    </div>
+                  </div>
+                  <div class="col-md-6">
+                    <div class="form-floating mb-3">
+                      <input type="text" class="form-control" id="expiryDate" placeholder="MM/YY" maxlength="5">
+                      <label for="expiryDate">Expiry Date (MM/YY)</label>
+                    </div>
+                  </div>
+                  <div class="col-md-6">
+                    <div class="form-floating mb-3">
+                      <input type="text" class="form-control" id="cvv" placeholder="CVV" maxlength="4">
+                      <label for="cvv">CVV</label>
+                    </div>
+                  </div>
+                  <div class="col-12">
+                    <div class="form-floating mb-3">
+                      <input type="text" class="form-control" id="cardholderName" placeholder="Cardholder Name">
+                      <label for="cardholderName">Cardholder Name</label>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="form-check mb-4">
+                <input class="form-check-input" type="checkbox" id="anonymous" required>
+                <label class="form-check-label" for="anonymous">
+                  I agree to the <a href="#" class="text-decoration-none">Terms of Service</a> and <a href="#" class="text-decoration-none">Privacy Policy</a>
+                </label>
+              </div>
+
+              <div class="d-grid">
+                <button type="submit" class="btn btn-donate-custom btn-lg">
+                  <i class="bi bi-heart-fill me-2"></i>Complete Donation
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- Footer -->
+<footer class="bg-dark text-white text-center py-4">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-6">
+        <h5><i class="bi bi-heart-fill text-danger"></i> Kind-Kart</h5>
+        <p class="small">
+          Making charitable giving transparent, impactful, and accessible to everyone.
+        </p>
+      </div>
+      <div class="col-md-6">
+        <h6>Quick Links</h6>
+        <ul class="list-unstyled">
+          <li><a href="about.html" class="text-light text-decoration-none">About Us</a></li>
+          <li><a href="cause.html" class="text-light text-decoration-none">Our Causes</a></li>
+          <li><a href="contact.html" class="text-light text-decoration-none">Contact</a></li>
+        </ul>
+      </div>
+    </div>
+    <hr class="my-3">
+    <p class="mb-0">&copy; 2025 Kind-Kart. All rights reserved.</p>
+  </div>
+</footer>
+
+
+<!-- Bootstrap JS -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+<script>
+// Global selection state and handlers for inline onclick attributes
+window.kkSelectedAmount = 0;
+window.kkSelectedPaymentMethod = '';
+
+function selectAmount(amount, event) {
+    window.kkSelectedAmount = amount;
+    document.querySelectorAll('.amount-option').forEach(option => option.classList.remove('selected'));
+    const container = event && event.currentTarget ? event.currentTarget : (document.querySelector('.amount-option input[type="radio"][value="' + amount + '"]')?.closest('.amount-option'));
+    if (container) {
+        container.classList.add('selected');
+        const radio = container.querySelector('input[type="radio"]');
+        if (radio) radio.checked = true;
+    }
+    const custom = document.getElementById('customAmount');
+    if (custom) custom.value = amount;
+}
+
+function selectPayment(method, event) {
+    window.kkSelectedPaymentMethod = method;
+    document.querySelectorAll('.payment-method').forEach(el => el.classList.remove('selected'));
+    const container = event && event.currentTarget ? event.currentTarget : (document.querySelector('.payment-method input[type="radio"][value="' + method + '"]')?.closest('.payment-method'));
+    if (container) {
+        container.classList.add('selected');
+        const radio = container.querySelector('input[type="radio"]');
+        if (radio) radio.checked = true;
+    }
+    const cardSection = document.getElementById('cardDetailsSection');
+    if (cardSection) cardSection.style.display = (method === 'card') ? 'block' : 'none';
+}
+
+document.addEventListener('DOMContentLoaded', function() {
+    let selectedAmount = 0; // legacy local (not used for submit)
+    let selectedPaymentMethod = ''; // legacy local (not used for submit)
+    const cardSection = document.getElementById('cardDetailsSection');
+    const cardRadio = document.getElementById('cardPayment');
+    const paypalRadio = document.getElementById('paypalPayment');
+
+    function updateCardSectionVisibility() {
+        if (!cardSection) return;
+        const shouldShow = window.kkSelectedPaymentMethod === 'card' || (cardRadio && cardRadio.checked);
+        cardSection.style.display = shouldShow ? 'block' : 'none';
+    }
+
+    // Initial visibility if card preselected via query or back/forward cache
+    updateCardSectionVisibility();
+
+    // Also respond to direct radio input changes (keyboard navigation or label clicks)
+    if (cardRadio) {
+        cardRadio.addEventListener('change', () => {
+            window.kkSelectedPaymentMethod = 'card';
+            updateCardSectionVisibility();
+        });
+    }
+    if (paypalRadio) {
+        paypalRadio.addEventListener('change', () => {
+            window.kkSelectedPaymentMethod = 'paypal';
+            updateCardSectionVisibility();
+        });
+    }
+
+    // Initialize section visibility on load (in case of back/forward cache)
+    updateCardSectionVisibility();
+
+    // Add click event listeners to amount options
+    document.querySelectorAll('.amount-option').forEach(option => {
+        option.addEventListener('click', function(e) {
+            const amount = parseInt(this.querySelector('input[type="radio"]').value);
+            selectAmount(amount, e);
+        });
+    });
+
+    // Add click event listeners to payment methods
+    document.querySelectorAll('.payment-method').forEach(method => {
+        method.addEventListener('click', function(e) {
+            const methodValue = this.querySelector('input[type="radio"]').value;
+            selectPayment(methodValue, e);
+        });
+    });
+
+    // Card input formatting
+    const cardNumber = document.getElementById('cardNumber');
+    if (cardNumber) {
+        cardNumber.addEventListener('input', function(e) {
+            let value = e.target.value.replace(/\D/g, '');
+            value = value.replace(/(\d{4})/g, '$1 ').trim();
+            e.target.value = value;
+        });
+    }
+
+    const expiryDate = document.getElementById('expiryDate');
+    if (expiryDate) {
+        expiryDate.addEventListener('input', function(e) {
+            let value = e.target.value.replace(/\D/g, '');
+            if (value.length >= 2) {
+                value = value.slice(0, 2) + '/' + value.slice(2);
+            }
+            e.target.value = value;
+        });
+    }
+
+    const cvv = document.getElementById('cvv');
+    if (cvv) {
+        cvv.addEventListener('input', function(e) {
+            e.target.value = e.target.value.replace(/\D/g, '');
+        });
+    }
+
+    // Handle custom amount input
+    const customAmount = document.getElementById('customAmount');
+    if (customAmount) {
+        customAmount.addEventListener('input', function() {
+            const amount = parseFloat(this.value) || 0;
+            window.kkSelectedAmount = amount;
+            document.querySelectorAll('.amount-option').forEach(option => option.classList.remove('selected'));
+        });
+    }
+
+// Handle form submission
+document.getElementById('donationForm').addEventListener('submit', async function(e) {
+    e.preventDefault();
+    const amount = window.kkSelectedAmount || parseFloat(document.getElementById('customAmount').value) || 0;
+    if (amount <= 0) { alert('Please enter a valid donation amount.'); return; }
+    if (!window.kkSelectedPaymentMethod) { alert('Please select a payment method.'); return; }
+    if (window.kkSelectedPaymentMethod === 'card') {
+        const cardNumber = document.getElementById('cardNumber').value.replace(/\s/g, '');
+        const expiryDate = document.getElementById('expiryDate').value;
+        const cvv = document.getElementById('cvv').value;
+        const cardholderName = document.getElementById('cardholderName').value.trim();
+        if (!cardNumber || cardNumber.length < 13) { alert('Please enter a valid card number.'); return; }
+        if (!expiryDate || expiryDate.length !== 5) { alert('Please enter a valid expiry date (MM/YY).'); return; }
+        if (!cvv || cvv.length < 3) { alert('Please enter a valid CVV.'); return; }
+        if (!cardholderName) { alert('Please enter the cardholder name.'); return; }
+    }
+    const user = JSON.parse(localStorage.getItem('kk_user') || 'null');
+    const paymentData = {
+        amount: amount,
+        paymentMethod: window.kkSelectedPaymentMethod,
+        currency: 'inr',
+        description: 'Donation to Kind-Kart',
+        donorInfo: {
+            firstName: document.getElementById('firstName').value.trim(),
+            lastName: document.getElementById('lastName').value.trim(),
+            email: document.getElementById('email').value.trim(),
+            userId: user ? user.id : null
+        }
+    };
+    if (window.kkSelectedPaymentMethod === 'card') {
+        paymentData.cardDetails = {
+            number: document.getElementById('cardNumber').value.replace(/\s/g, ''),
+            expiry: document.getElementById('expiryDate').value,
+            cvv: document.getElementById('cvv').value,
+            name: document.getElementById('cardholderName').value.trim()
+        };
+    }
+    const submitBtn = e.target.querySelector('button[type="submit"]');
+    const originalText = submitBtn.innerHTML;
+    submitBtn.disabled = true;
+    submitBtn.innerHTML = '<i class="bi bi-hourglass-split me-2"></i>Processing...';
+    try {
+        const response = await fetch('http://localhost:3000/api/payments/process', {
+            method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(paymentData)
+        });
+        const result = await response.json();
+        if (!response.ok) { throw new Error(result.error || 'Payment failed'); }
+        const formContainer = document.querySelector('.donation-card .card-body');
+        formContainer.innerHTML = `
+            <div class="text-center py-4">
+                <i class="bi bi-check-circle-fill text-success" style="font-size: 4rem;"></i>
+                <h3 class="text-success mt-3">Payment Successful!</h3>
+                <p class="lead">Your donation has been processed successfully.</p>
+                <div class="payment-slip mt-4 p-4 border rounded bg-light">
+                    <div class="row text-start">
+                        <div class="col-6">
+                            <h6 class="text-muted mb-1">Transaction ID</h6>
+                            <p class="fw-bold mb-3">${result.transactionId}</p>
+                        </div>
+                        <div class="col-6 text-end">
+                            <h6 class="text-muted mb-1">Date & Time</h6>
+                            <p class="fw-bold mb-3">${new Date().toLocaleString()}</p>
+                        </div>
+                    </div>
+                    <hr>
+                    <div class="row text-start">
+                        <div class="col-6">
+                            <h6 class="text-muted mb-1">Amount Paid</h6>
+                            <p class="fw-bold fs-4 text-success mb-3">₹${amount}</p>
+                        </div>
+                        <div class="col-6 text-end">
+                            <h6 class="text-muted mb-1">Payment Method</h6>
+                            <p class="fw-bold mb-3">${window.kkSelectedPaymentMethod.toUpperCase()}</p>
+                        </div>
+                    </div>
+                    <hr>
+                    <div class="row text-start">
+                        <div class="col-12">
+                            <h6 class="text-muted mb-1">Donor Information</h6>
+                            <p class="fw-bold mb-1">${document.getElementById('firstName').value.trim()} ${document.getElementById('lastName').value.trim()}</p>
+                            <p class="text-muted mb-0">${document.getElementById('email').value.trim()}</p>
+                        </div>
+                    </div>
+                    <hr>
+                    <div class="text-center mt-3">
+                        <a href="main.html" class="btn btn-primary">
+                            <i class="bi bi-house me-2"></i>Return Home
+                        </a>
+                    </div>
+                </div>
+            </div>
+        `;
+    } catch (error) {
+        alert('Payment failed: ' + error.message);
+        submitBtn.disabled = false; submitBtn.innerHTML = originalText;
+    }
+});
+});
+</script>
+
+<!-- User Profile Dropdown Script -->
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const user = JSON.parse(localStorage.getItem('kk_user') || 'null');
+      const nav = document.querySelector('.navbar .navbar-nav');
+      if (!nav) return;
+      const loginBtn = nav.querySelector('a[href="login.html"]')?.closest('li');
+      if (user && loginBtn) {
+        const li = document.createElement('li');
+        li.className = 'nav-item dropdown ms-2';
+        li.innerHTML = `
+          <a class="nav-link dropdown-toggle d-flex align-items-center" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+            <img src="${user.photo_url || 'https://ui-avatars.com/api/?name=' + encodeURIComponent(user.name || user.email)}" alt="avatar" class="rounded-circle me-2" style="width:28px;height:28px;object-fit:cover;"> 
+            <span>${user.name || user.email}</span>
+          </a>
+          <ul class="dropdown-menu dropdown-menu-end">
+            <li><a class="dropdown-item" href="profile.html">Profile</a></li>
+            <li><a class="dropdown-item" href="donation_history.html">My Donations</a></li>
+            <li><a class="dropdown-item" href="feedback.html">Feedback</a></li>
+
+            <li><hr class="dropdown-divider"></li>
+            <li><button class="dropdown-item" id="kk-logout">Logout</button></li>
+          </ul>`;
+        loginBtn.replaceWith(li);
+        document.getElementById('kk-logout')?.addEventListener('click', () => {
+          localStorage.removeItem('kk_user');
+          window.location.reload();
+        });
+      }
+    });
+</script>
+
+<!-- Donations Modal -->
+<div class="modal fade" id="donationsModal" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-lg modal-dialog-scrollable">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">My Donations</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+      <div class="modal-body">
+        <div id="donationsList" class="vstack gap-3"></div>
+        <div id="donationsEmpty" class="text-center text-muted d-none">No donations yet.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Donations Modal Loader Script -->
+<script>
+const API = 'http://localhost:3000';
+async function loadDonations() {}
+document.addEventListener('DOMContentLoaded', () => {
+  const modalEl = document.getElementById('donationsModal');
+  if (!modalEl) return;
+  modalEl.addEventListener('shown.bs.modal', loadDonations);
+});
+</script>
+
+</body>
+</html>
